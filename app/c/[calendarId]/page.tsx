@@ -1,3 +1,4 @@
+import NotificationManager from "@/components/NotificationManager";
 import WindowsGrid from "@/components/WindowsGrid";
 
 interface PageProps {
@@ -11,10 +12,12 @@ export default async function Page({ params: { calendarId } }: PageProps) {
   const today = 7;
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold text-center text-primary mb-4">
+    <div className="flex flex-col gap-8 items-stretch justify-center">
+      <h1 className="text-3xl font-bold text-center text-primary">
         Calendar {calendarId}
       </h1>
+
+      <NotificationManager />
       <WindowsGrid today={today} />
     </div>
   );

@@ -1,11 +1,12 @@
 import { fontSans } from "@/config/fonts";
 import "@/styles/globals.css";
-import { faSnowflake, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faSnowflake } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "@nextui-org/link";
 import clsx from "clsx";
 import { Metadata } from "next";
 import { Suspense } from "react";
+import { FirebaseProvider } from "./firebase";
 
 export const metadata: Metadata = {
   title: {
@@ -34,36 +35,38 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <div className="relative flex flex-col h-screen">
-          <main className="container mx-auto max-w-lg pt-16 px-6 flex-grow">
-            <Suspense
-              fallback={
-                <div className="flex items-center justify-center h-screen gap-2">
-                  <p className="text-primary">
-                    <FontAwesomeIcon
-                      icon={faSnowflake}
-                      className="mr-2 w-6 h-6"
-                    />
-                  </p>
-                  <p className="text-primary">Loading...</p>
-                </div>
-              }
-            >
-              {children}
-            </Suspense>
-          </main>
-          <footer className="w-full flex items-center justify-center py-3">
-            <Link
-              isExternal
-              className="flex items-center gap-1 text-current"
-              href="https://www.github.com/sg10"
-              title="sg10 on GitHub"
-            >
-              <span className="text-default-600">Powered by</span>
-              <p className="text-primary">sg10</p>
-            </Link>
-          </footer>
-        </div>
+        <FirebaseProvider>
+          <div className="relative flex flex-col h-screen">
+            <main className="container mx-auto max-w-lg pt-16 px-6 flex-grow">
+              <Suspense
+                fallback={
+                  <div className="flex items-center justify-center h-screen gap-2">
+                    <p className="text-primary">
+                      <FontAwesomeIcon
+                        icon={faSnowflake}
+                        className="mr-2 w-6 h-6"
+                      />
+                    </p>
+                    <p className="text-primary">Loading...</p>
+                  </div>
+                }
+              >
+                {children}
+              </Suspense>
+            </main>
+            <footer className="w-full flex items-center justify-center py-3">
+              <Link
+                isExternal
+                className="flex items-center gap-1 text-current"
+                href="https://www.github.com/sg10"
+                title="sg10 on GitHub"
+              >
+                <span className="text-default-600">Powered by</span>
+                <p className="text-primary">sg10</p>
+              </Link>
+            </footer>
+          </div>
+        </FirebaseProvider>
       </body>
     </html>
   );
