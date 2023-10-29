@@ -6,15 +6,16 @@ interface PageProps {
   };
 }
 
-export default function Page({
-  params: { calendarId },
-}: PageProps): JSX.Element {
+export default async function Page({ params: { calendarId } }: PageProps) {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  const today = 7;
+
   return (
     <div>
-      <h1 className="text-3xl font-bold text-center text-primary">
+      <h1 className="text-3xl font-bold text-center text-primary mb-4">
         Calendar {calendarId}
       </h1>
-      <WindowsGrid />
+      <WindowsGrid today={today} />
     </div>
   );
 }

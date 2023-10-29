@@ -8,16 +8,33 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 
 interface CalendarWindowProps {
-  day: string;
+  day: number;
+  disabled?: boolean;
+  emphasized?: boolean;
 }
 
-export default function CalendarWindow({ day }: CalendarWindowProps) {
+export default function CalendarWindow({
+  day,
+  disabled,
+  emphasized,
+}: CalendarWindowProps) {
   const { calendarId } = useParams();
 
+  const linkProps = disabled
+    ? {}
+    : { href: `/c/${calendarId}/${day}`, as: Link };
+
   return (
-    <Card as={Link} href={`/c/${calendarId}/${day}`} className="cursor-pointer">
-      <CardHeader className="pb-0 flex items-start justify-center">
-        <h4 className="font-bold text-xl text-primary pb-0">Day {day}</h4>
+    <Card
+      {...linkProps}
+      className={`${disabled ? "opacity-50" : "hover:shadow-lg cursor-pointer"} 
+        ${emphasized ? "border-3 border-primary" : ""}
+        p-4
+      transition-all duration-200 ease-in-out`}
+      id={`day-${day}`}
+    >
+      <CardHeader className="pb-3 flex items-start justify-center font-bold text-2xl text-primary">
+        Day {day}
       </CardHeader>
       <CardBody className="overflow-visible flex items-center justify-center">
         <FontAwesomeIcon
