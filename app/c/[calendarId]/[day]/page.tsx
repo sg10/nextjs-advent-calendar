@@ -26,7 +26,7 @@ export default async function Page({ params: { day } }: Params): JSX.Element {
 
   return (
     <Card>
-      <div className="flex flex-col gap-3 items-stretch justify-center">
+      <div className="flex flex-col items-stretch justify-center">
         <CardHeader>
           <h1 className="text-3xl font-bold text-center text-primary">
             <span className="inline-block h-10 w-10 rounded-full bg-primary text-white text-center mr-3">
