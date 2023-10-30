@@ -1,7 +1,4 @@
-import { getIconForDay } from "@/app/icons";
-import YouTube from "@/components/content/YouTube";
-import { faSnowflake } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import WindowContent from "@/components/content/WindowContent";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
 
 interface Params {
@@ -38,9 +35,7 @@ export default async function Page({ params: { day } }: Params): JSX.Element {
         <CardBody>
           <p>{content.description}</p>
         </CardBody>
-        <div>
-          <YouTube url="https://www.youtube.com/embed/1qN72LEQnaU" />
-        </div>
+        <WindowContent content={content} />
       </div>
     </Card>
   );
