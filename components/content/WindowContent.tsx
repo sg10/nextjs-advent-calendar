@@ -7,7 +7,7 @@ import YouTube from "./YouTube";
 export default function WindowContent({
   content,
 }: {
-  content: Content;
+  content: { title: string; description: string; url: string };
 }): JSX.Element {
   const [isCompleted, setIsCompleted] = useState<boolean>(false);
 

@@ -26,7 +26,7 @@ export default function WindowsGrid({
       {Array.from({ length: 24 }, (_, i) => (
         <CalendarWindow
           key={i}
-          day={`${i + 1}`}
+          day={i + 1}
           disabled={i + 1 > today}
           emphasized={i + 1 === today}
         />

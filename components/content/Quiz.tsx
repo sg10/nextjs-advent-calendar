@@ -52,12 +52,13 @@ const quiz: Quiz = {
 };
 
 export default function Quiz({
-  q = quiz,
+  //q = quiz,
   onCompleted,
 }: {
-  q: Quiz;
+  //q: Quiz;
   onCompleted?: () => void;
 }): JSX.Element {
+  const q = quiz;
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(-1);
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
   const currentQuestion = q.questions?.[currentQuestionIndex];

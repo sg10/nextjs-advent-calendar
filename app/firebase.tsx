@@ -16,13 +16,13 @@ let app: ReturnType<typeof initializeApp>;
 export function FirebaseProvider({
   children,
 }: {
-  children: React.ReactNode;
-}): React.ReactElement {
+  children: JSX.Element;
+}): JSX.Element {
   if (!app) {
     app = initializeApp(firebaseConfig);
   }
 
-  return children;
+  return <>{children}</>;
 }
 
 export { app as firebaseApp };

@@ -8,6 +8,10 @@ import { Input } from "@nextui-org/input";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 
+type FormValues = {
+  code: string;
+};
+
 export default function LoginForm() {
   const router = useRouter();
 
@@ -15,9 +19,9 @@ export default function LoginForm() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>();
+  } = useForm<FormValues>();
 
-  const onSubmit: SubmitHandler<Inputs> = (data) =>
+  const onSubmit: SubmitHandler<FormValues> = (data) =>
     router.push(`/c/${data.code}`); // TODO some mapping...
 
   return (

@@ -13,7 +13,9 @@ interface Content {
   url: string;
 }
 
-export default async function Page({ params: { day } }: Params): JSX.Element {
+export default async function Page({
+  params: { day },
+}: Params): Promise<JSX.Element> {
   const content: Content = {
     title: "Snowflake",
     description:
