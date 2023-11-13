@@ -93,7 +93,13 @@ export default function Quiz({
         setShowIncorrect(false);
       }, 1800);
     }
-  }, [currentQuestion, currentQuestionIndex, selectedAnswers]);
+  }, [
+    currentQuestion,
+    currentQuestionIndex,
+    selectedAnswers,
+    q.questions.length,
+    onCompleted,
+  ]);
 
   const selectAnswer = useCallback(
     (answerIndex: number) => {
@@ -131,8 +137,11 @@ export default function Quiz({
           ) : (
             <>
               <h2>{currentQuestion.questionText}</h2>
-              {currentQuestion.questionImage && (
-                <img src={currentQuestion.questionImage} />
+              {currentQuestion.questionImage && ( // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={currentQuestion.questionImage}
+                  alt={currentQuestion.questionText}
+                />
               )}
               <div className="flex flex-col w-full gap-4">
                 {currentQuestion.answers.map((answer, index) => (
@@ -144,7 +153,9 @@ export default function Quiz({
                       selectedAnswers.includes(index) ? "font-bold" : ""
                     }`}
                   >
-                    {answer.image && <img src={answer.image} />}
+                    {answer.image && ( // eslint-disable-next-line @next/next/no-img-element
+                      <img src={answer.image} alt={answer.text} />
+                    )}
                     {answer.text}{" "}
                     {selectedAnswers.includes(index) && (
                       <FontAwesomeIcon icon={faCheck} className="ml-2" />
