@@ -1,0 +1,36 @@
+{
+  "john23": {
+    "title": "John's Advent Calendar 2023",
+    "windows": [
+      {
+        "day": 1,
+        "title": "Snowflake",
+        "text": "A snowflake is a single ice crystal that has achieved a sufficient size, and may have amalgamated with others, then falls through the Earth's atmosphere as snow.",
+        "content": [
+          {
+            "type": "quiz",
+              "intro": "This is a quiz about general knowledge. Test your skills!",
+              "questions": [
+                {
+                  "questionText": "Which of these are programming languages?",
+                  "answers": [
+                    { "text": "Python" },
+                    { "text": "Java" },
+                    { "text": "HTML" },
+                    { "text": "All of the above" }
+                  ],
+                  "correctAnswers": [3],
+                  "isMultipleChoice": false
+                }
+              ]
+          },
+
+          {
+            "type": "youtube",
+            "url": "https://www.youtube.com/embed/IJNR2EpS0jw"
+          }
+        ]
+      }
+    ]
+  }
+}

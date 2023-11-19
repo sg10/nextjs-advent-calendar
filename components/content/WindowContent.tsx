@@ -1,23 +1,67 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Quiz from "./Quiz";
-import YouTube from "./YouTube";
+import ContentElementResolver from "./ContentElementResolver";
+import { useParams } from "next/navigation";
 
 export default function WindowContent({
   content,
 }: {
-  content: { title: string; description: string; url: string };
+  content: any[];
 }): JSX.Element {
+  const { calendarId, day } = useParams() as {
+    calendarId: string;
+    day: string;
+  };
+
   const [isCompleted, setIsCompleted] = useState<boolean>(false);
+
+  // either one element or two, if two then first has to be type quiz
+  if (content.length > 2) {
+    throw new Error("Invalid data: too many elements");
+  } else if (content.length === 0) {
+    throw new Error("Invalid data: no elements");
+  } else if (content.length === 2 && content[0].type !== "quiz") {
+    throw new Error("Invalid data: first element must be quiz");
+  }
+
+  useEffect(() => {
+    const completed = getStoredState(calendarId)[day] ?? false;
+    if (completed) {
+      setIsCompleted(true);
+    }
+  }, [calendarId, day]);
+
+  const setIsCompletedAndSave = useCallback(() => {
+    const newState = {
+      ...getStoredState(calendarId),
+      [day]: true,
+    };
+    localStorage.setItem(calendarId, JSON.stringify(newState));
+    setIsCompleted(true);
+  }, [calendarId, day]);
 
   return (
     <div>
-      {isCompleted ? (
-        <YouTube url="https://www.youtube.com/embed/1qN72LEQnaU" />
+      {content.length === 1 ? (
+        <ContentElementResolver data={content[0]} />
+      ) : content.length === 2 ? (
+        isCompleted ? (
+          <ContentElementResolver data={content[1]} />
+        ) : (
+          <Quiz onCompleted={() => setIsCompletedAndSave()} q={content[0]} />
+        )
       ) : (
-        <Quiz onCompleted={() => setIsCompleted(true)} />
+        <div>Invalid data: too many elements</div>
       )}
     </div>
   );
+}
+
+function getStoredState(calendarId: string): Record<string, boolean> {
+  return JSON.parse(localStorage.getItem(calendarId) ?? "{}") as Record<
+    string,
+    boolean
+  >;
 }

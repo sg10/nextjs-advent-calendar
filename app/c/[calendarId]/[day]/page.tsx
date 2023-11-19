@@ -1,5 +1,8 @@
 import WindowContent from "@/components/content/WindowContent";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
+import data from "@/app/data.json";
+import { Button } from "@nextui-org/button";
+import Link from "next/link";
 
 interface Params {
   params: {
@@ -7,38 +10,34 @@ interface Params {
   };
 }
 
-interface Content {
-  title: string;
-  description: string;
-  url: string;
-}
-
 export default async function Page({
-  params: { day },
+  params: { calendarId, day },
 }: Params): Promise<JSX.Element> {
-  const content: Content = {
-    title: "Snowflake",
-    description:
-      "The cool thing about a snowflake is that it is unique. No two snowflakes are alike. The same is true for you. You are unique. There is no one else like you. You are special. You are loved. You are a child of God.",
-    url: "https://www.youtube.com/embed/1qN72LEQnaU",
-  };
+  const win: WindowContent = data[calendarId].windows.find(
+    (d) => d.day === parseInt(day),
+  );
 
   return (
-    <Card>
-      <div className="flex flex-col items-stretch justify-center">
-        <CardHeader>
-          <h1 className="text-3xl font-bold text-center text-primary">
-            <span className="inline-block h-10 w-10 rounded-full bg-primary text-white text-center mr-3">
-              {day}
-            </span>
-            {content.title}
-          </h1>
-        </CardHeader>
-        <CardBody>
-          <p>{content.description}</p>
-        </CardBody>
-        <WindowContent content={content} />
-      </div>
-    </Card>
+    <div className="flex flex-col gap-8 items-stretch justify-center">
+      <Card>
+        <div className="flex flex-col items-stretch justify-center">
+          <CardHeader>
+            <h1 className="text-3xl font-bold text-center text-primary">
+              <span className="inline-block h-11 w-11 rounded-full bg-primary text-white text-center mr-3">
+                {day}
+              </span>
+              {win.title}
+            </h1>
+          </CardHeader>
+          <CardBody>
+            <p>{win.text}</p>
+          </CardBody>
+          <WindowContent content={win.content} />
+        </div>
+      </Card>
+      <Button as={Link} href={`/c/${calendarId}#day-${day}`} color="secondary">
+        Back
+      </Button>
+    </div>
   );
 }

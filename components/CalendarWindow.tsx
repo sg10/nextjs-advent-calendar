@@ -33,7 +33,7 @@ export default function CalendarWindow({
       transition-all duration-200 ease-in-out`}
       id={`day-${day}`}
     >
-      <CardHeader className="pb-3 flex items-start justify-center font-bold text-2xl text-primary">
+      <CardHeader className="pb-3 flex items-start justify-center font-bold text-2xl text-primary text-center">
         Day {day}
       </CardHeader>
       <CardBody className="overflow-visible flex items-center justify-center">
