@@ -16,6 +16,14 @@ export default function ContentElementResolver({
     );
   } else if (data.type === "image") {
     return <Image src={data.url} alt={data.alt} className="w-full" />;
+  } else if (data.type === "placeholder") {
+    return (
+      <div className="w-full h-96 bg-gray-200 dark:bg-gray-800">
+        <div className="flex items-center justify-center h-full">
+          <p className="text-primary">Placeholder</p>
+        </div>
+      </div>
+    );
   }
 
   return <div>Invalid type: {data.type ?? "undefined"}</div>;

@@ -1,6 +1,6 @@
 import NotificationManager from "@/components/NotificationManager";
 import WindowsGrid from "@/components/WindowsGrid";
-import data from "@/app/data.json";
+import calendarData from "@/app/calendarData";
 
 interface PageProps {
   params: {
@@ -8,9 +8,18 @@ interface PageProps {
   };
 }
 
+const notificationsEnabled = false;
+
 export default async function Page({ params: { calendarId } }: PageProps) {
-  const calendar = data[calendarId];
-  const today = 7;
+  const calendar = calendarData[calendarId];
+
+  if (!calendar) {
+    return (
+      <div className="flex items-center justify-center text-primary text-2xl">
+        Calendar not found
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-8 items-stretch justify-center">
@@ -18,8 +27,8 @@ export default async function Page({ params: { calendarId } }: PageProps) {
         {calendar.title}
       </h1>
 
-      <NotificationManager />
-      <WindowsGrid today={today} windows={calendar.windows} />
+      {notificationsEnabled && <NotificationManager />}
+      <WindowsGrid windows={calendar.windows} />
     </div>
   );
 }

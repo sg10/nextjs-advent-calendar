@@ -3,17 +3,26 @@
 import { useEffect } from "react";
 import CalendarWindow from "./CalendarWindow";
 import { useParams } from "next/navigation";
+import {
+  getTodayDay,
+  isCalendarMonth,
+  isDayToday,
+  isOpen,
+} from "@/app/utils/calendarUtils";
 
 interface WindowsGridProps {
-  today: number;
   scrollToToday?: boolean;
   windows: any;
 }
 
-export default function WindowsGrid({ today, windows }: WindowsGridProps) {
+export default function WindowsGrid({ windows }: WindowsGridProps) {
   const params = useParams();
 
   useEffect(() => {
+    if (!isCalendarMonth()) return;
+
+    const today = getTodayDay();
+
     const hash = window.location.hash; // day-x
     const dayToScrollTo = hash ? parseInt(hash.split("-")[1]) : undefined;
 
@@ -28,16 +37,16 @@ export default function WindowsGrid({ today, windows }: WindowsGridProps) {
         element.scrollIntoView({ behavior: "smooth", block: "center" });
       }
     }
-  }, [today, params]);
+  }, [params]);
 
   return (
     <div className="grid gap-7 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-      {Array.from({ length: 24 }, (_, i) => (
+      {windows.map((window: any) => (
         <CalendarWindow
-          key={i}
-          day={i + 1}
-          disabled={i + 1 > today || !windows.find((d) => d.day === i + 1)}
-          emphasized={i + 1 === today}
+          key={window.day}
+          day={window.day}
+          disabled={!isOpen(window.day)}
+          emphasized={isDayToday(window.day)}
         />
       ))}
     </div>
