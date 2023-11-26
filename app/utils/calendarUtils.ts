@@ -21,6 +21,9 @@ export function isCalendarMonth() {
   return date.getMonth() === 11;
 }
 
-export function isOpen(day: number) {
+export function isOpen(day: number | string) {
+  if (typeof day === "string") {
+    day = parseInt(day);
+  }
   return isCalendarMonth() && day <= getTodayDay();
 }
