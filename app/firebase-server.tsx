@@ -1,6 +1,6 @@
 import "server-only";
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, initializeFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -12,6 +12,8 @@ const firebaseConfig = {
 };
 
 let app: ReturnType<typeof initializeApp> = initializeApp(firebaseConfig);
-let db: ReturnType<typeof getFirestore> = getFirestore(app);
+let db: ReturnType<typeof getFirestore> = initializeFirestore(app, {
+  experimentalForceLongPolling: true,
+});
 
 export { db as firestoreDB };
