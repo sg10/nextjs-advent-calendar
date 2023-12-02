@@ -1,9 +1,10 @@
-import WindowContent from "@/components/content/WindowContent";
-import { Card, CardBody, CardHeader } from "@nextui-org/card";
-import { Button } from "@nextui-org/button";
-import Link from "next/link";
-import calendarData from "@/app/calendarData";
+import { firestoreDB } from "@/app/firebase-server";
 import { isOpen } from "@/app/utils/calendarUtils";
+import WindowContent from "@/components/content/WindowContent";
+import { Button } from "@nextui-org/button";
+import { Card, CardBody, CardHeader } from "@nextui-org/card";
+import { doc, getDoc } from "firebase/firestore";
+import Link from "next/link";
 
 interface Params {
   params: {
@@ -15,9 +16,20 @@ interface Params {
 export default async function Page({
   params: { calendarId, day },
 }: Params): Promise<JSX.Element> {
-  const win: WindowContent = calendarData?.[calendarId].windows.find(
-    (d: any) => d.day === parseInt(day),
-  ) as WindowContent;
+  const document = await getDoc(
+    doc(firestoreDB, calendarId, "config", "windows", day),
+  );
+
+  if (!document.exists()) {
+    return (
+      <div className="flex items-center justify-center text-primary text-2xl flex-col gap-4">
+        <div>Window not found</div>
+        <div className="h-96">:(</div>
+      </div>
+    );
+  }
+
+  const win = document.data() as WindowContentData;
 
   return (
     <div className="flex flex-col gap-8 items-stretch justify-center">

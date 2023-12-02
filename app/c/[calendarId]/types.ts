@@ -1,5 +1,8 @@
-interface WindowContent {
+interface WindowContentData {
+  day: number;
   title: string;
   text: string;
-  content: any[];
+  content: {
+    type: string;
+  }[];
 }

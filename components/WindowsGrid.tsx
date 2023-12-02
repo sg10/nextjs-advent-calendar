@@ -12,7 +12,7 @@ import {
 
 interface WindowsGridProps {
   scrollToToday?: boolean;
-  windows: any;
+  windows: WindowContentData[];
 }
 
 export default function WindowsGrid({ windows }: WindowsGridProps) {

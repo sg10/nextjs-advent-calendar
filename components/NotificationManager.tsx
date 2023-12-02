@@ -1,6 +1,6 @@
 "use client";
 
-import { firebaseApp } from "@/app/firebase";
+import { firebaseApp } from "@/app/firebase-client";
 import { faBan, faBell, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@nextui-org/button";

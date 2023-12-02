@@ -6,7 +6,7 @@ import { Link } from "@nextui-org/link";
 import clsx from "clsx";
 import { Metadata } from "next";
 import { Suspense } from "react";
-import { FirebaseProvider } from "./firebase";
+import { FirebaseClientProvider } from "./firebase-client";
 
 export const metadata: Metadata = {
   title: {
@@ -35,7 +35,7 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <FirebaseProvider>
+        <FirebaseClientProvider>
           <div className="relative flex flex-col h-screen">
             <main className="container w-full max-w-xl mx-auto pt-16 px-6 flex-grow">
               <Suspense
@@ -66,7 +66,7 @@ export default function RootLayout({
               </Link>
             </footer>
           </div>
-        </FirebaseProvider>
+        </FirebaseClientProvider>
       </body>
     </html>
   );

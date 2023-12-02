@@ -1,6 +1,7 @@
 "use client";
 
 import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -12,14 +13,16 @@ const firebaseConfig = {
 };
 
 let app: ReturnType<typeof initializeApp>;
+let db: ReturnType<typeof getFirestore>;
 
-export function FirebaseProvider({
+export function FirebaseClientProvider({
   children,
 }: {
   children: JSX.Element;
 }): JSX.Element {
   if (!app) {
     app = initializeApp(firebaseConfig);
+    db = getFirestore(app);
   }
 
   return <>{children}</>;
