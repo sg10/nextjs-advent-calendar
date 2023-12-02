@@ -1,7 +1,6 @@
-import { firestoreDB } from "@/app/firebase-server";
+import { getFirestoreDB } from "@/app/firebase-server";
 import NotificationManager from "@/components/NotificationManager";
 import WindowsGrid from "@/components/WindowsGrid";
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 
 interface PageProps {
   params: {
@@ -12,9 +11,12 @@ interface PageProps {
 const notificationsEnabled = false;
 
 export default async function Page({ params: { calendarId } }: PageProps) {
-  const configDoc = await getDoc(doc(firestoreDB, calendarId, "config"));
+  const configDoc = await getFirestoreDB()
+    .collection(calendarId)
+    .doc("config")
+    .get();
 
-  if (!configDoc.exists()) {
+  if (!configDoc.exists) {
     return (
       <div className="flex items-center justify-center text-primary text-2xl flex-col gap-4">
         <div>Calendar not found</div>
@@ -25,18 +27,18 @@ export default async function Page({ params: { calendarId } }: PageProps) {
 
   const config = configDoc.data() as { title: string };
 
-  const windowsDocs = await getDocs(
-    collection(firestoreDB, calendarId, "config", "windows"),
-  );
+  const windowsDocs = await getFirestoreDB()
+    .collection(calendarId)
+    .doc("config")
+    .collection("windows")
+    .listDocuments();
 
-  const windows = windowsDocs.docs.map(
-    (doc: FirebaseFirestore.DocumentData) => {
-      return {
-        day: doc.id,
-        ...doc.data(),
-      } as WindowContentData;
-    },
-  ) as WindowContentData[];
+  const windows: WindowContentData[] = [];
+
+  for (const doc of windowsDocs) {
+    const data = (await doc.get()).data();
+    windows.push({ ...data, day: parseInt(doc.id) } as WindowContentData);
+  }
 
   windows.sort((a, b) => a.day - b.day);
 

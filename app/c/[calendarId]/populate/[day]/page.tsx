@@ -1,30 +1,36 @@
-import { firestoreDB } from "@/app/firebase-server";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { Button } from "@nextui-org/button";
-import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
+
 import { revalidatePath } from "next/cache";
 import JsonEditor from "./JsonEditor";
 import RenderedWindowMaybe from "./RenderedWindowMaybe";
 import initialPopulate from "./inital";
+import { getFirestoreDB } from "@/app/firebase-server";
 
 export default async function InitalPopulate({
   params: { calendarId, day },
 }: {
   params: { calendarId: string; day: string };
 }) {
-  const configDoc = await getDoc(doc(firestoreDB, calendarId, "config"));
-  if (!configDoc.exists()) {
+  const configDoc = await getFirestoreDB()
+    .collection(calendarId)
+    .doc("config")
+    .get();
+  if (!configDoc.exists) {
     initialPopulate({ calendarId });
   }
+  const windowsDocs = await getFirestoreDB()
+    .collection(calendarId)
+    .doc("config")
+    .collection("windows")
+    .listDocuments();
 
-  const windows = (
-    await getDocs(collection(firestoreDB, calendarId, "config", "windows"))
-  ).docs.map((doc: any) => {
-    return {
-      day: doc.id,
-      ...doc.data(),
-    };
-  }) as WindowContentData[];
+  const windows: WindowContentData[] = [];
+
+  for (const doc of windowsDocs) {
+    const data = (await doc.get()).data();
+    windows.push({ ...data, day: parseInt(doc.id) } as WindowContentData);
+  }
 
   windows.sort((a, b) => a.day - b.day);
 
@@ -34,7 +40,12 @@ export default async function InitalPopulate({
     const dataString = formData.get("data") as string;
     const data = JSON.parse(dataString);
 
-    await setDoc(doc(firestoreDB, calendarId, "config", "windows", day), data);
+    await getFirestoreDB()
+      .collection(calendarId)
+      .doc("config")
+      .collection("windows")
+      .doc(day)
+      .set(data);
 
     revalidatePath(`/c/${calendarId}/populate/${day}`);
   }

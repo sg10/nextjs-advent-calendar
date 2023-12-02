@@ -1,4 +1,4 @@
-import { firestoreDB } from "@/app/firebase-server";
+import { getFirestoreDB } from "@/app/firebase-server";
 import { doc, setDoc } from "firebase/firestore";
 
 export default async function initialPopulate({
@@ -6,12 +6,10 @@ export default async function initialPopulate({
 }: {
   calendarId: string;
 }) {
-  // create config doc
-  await setDoc(doc(firestoreDB, calendarId, "config"), {
+  await getFirestoreDB().collection(calendarId).doc("config").set({
     title: "Advent Calendar",
   });
 
-  // create windows
   const windows = [];
 
   for (let i = 1; i <= 24; i++) {
@@ -31,10 +29,7 @@ export default async function initialPopulate({
 
   await Promise.all(
     windows.map((window) =>
-      setDoc(
-        doc(firestoreDB, calendarId, "config", "windows", `${window.day}`),
-        window,
-      ),
+      getFirestoreDB().collection(calendarId).doc(`${window.day}`).set(window),
     ),
   );
 }

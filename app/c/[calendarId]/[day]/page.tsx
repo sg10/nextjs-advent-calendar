@@ -1,4 +1,4 @@
-import { firestoreDB } from "@/app/firebase-server";
+import { firestoreDB, getFirestoreDB } from "@/app/firebase-server";
 import { isOpen } from "@/app/utils/calendarUtils";
 import WindowContent from "@/components/content/WindowContent";
 import { Button } from "@nextui-org/button";
@@ -16,11 +16,14 @@ interface Params {
 export default async function Page({
   params: { calendarId, day },
 }: Params): Promise<JSX.Element> {
-  const document = await getDoc(
-    doc(firestoreDB, calendarId, "config", "windows", day),
-  );
+  const document = await getFirestoreDB()
+    .collection(calendarId)
+    .doc("config")
+    .collection("windows")
+    .doc(day)
+    .get();
 
-  if (!document.exists()) {
+  if (!document.exists) {
     return (
       <div className="flex items-center justify-center text-primary text-2xl flex-col gap-4">
         <div>Window not found</div>

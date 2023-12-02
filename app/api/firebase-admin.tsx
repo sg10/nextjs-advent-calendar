@@ -1,4 +1,6 @@
 import "server-only";
+
+import { firestore } from "firebase-admin";
 import * as admin from "firebase-admin";
 
 export function requireFirebaseAdmin() {
@@ -13,4 +15,9 @@ export function requireFirebaseAdmin() {
   }
 
   return admin;
+}
+
+export function getFirestoreDB() {
+  requireFirebaseAdmin();
+  return firestore();
 }
