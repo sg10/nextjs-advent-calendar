@@ -18,7 +18,7 @@ export default function WindowCardPreview({
           </h1>
         </CardHeader>
         <CardBody>
-          <p>{window.text}</p>
+          <p className="whitespace-pre-wrap">{window.text}</p>
         </CardBody>
         <WindowContent content={window.content} />
       </div>

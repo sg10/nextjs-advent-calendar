@@ -47,7 +47,7 @@ export default async function Page({
               </h1>
             </CardHeader>
             <CardBody>
-              <p>{win.text}</p>
+              <p className="whitespace-pre-wrap">{win.text}</p>
             </CardBody>
             <WindowContent content={win.content} />
           </div>

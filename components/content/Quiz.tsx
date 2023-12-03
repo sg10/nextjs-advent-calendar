@@ -23,6 +23,7 @@ interface Quiz {
   questions: Question[];
 }
 
+// example blob
 const quiz: Quiz = {
   intro: "Welcome to the quiz",
   questions: [
