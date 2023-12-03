@@ -15,7 +15,16 @@ export default function ContentElementResolver({
       </div>
     );
   } else if (data.type === "image") {
-    return <Image src={data.url} alt={data.alt} className="w-full" />;
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={data.url}
+        alt={data.url}
+        className="w-full"
+        width={500}
+        height={500}
+      />
+    );
   } else if (data.type === "placeholder") {
     return (
       <div className="w-full h-96 bg-gray-200 dark:bg-gray-800">
