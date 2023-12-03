@@ -28,7 +28,14 @@ export default async function initialPopulate({
 
   await Promise.all(
     windows.map((window) =>
-      getFirestoreDB().collection(calendarId).doc(`${window.day}`).set(window),
+      getFirestoreDB()
+        .collection(calendarId)
+        .doc("config")
+        .collection("windows")
+        .doc(`${window.day}`)
+        .set(window),
     ),
   );
+
+  console.log("Done");
 }
