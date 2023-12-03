@@ -5,7 +5,12 @@ import { requireFirebaseAdmin } from "../firebase-admin";
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get("authorization");
 
+  // if parameter "test=1" is set, allow cron to be tested,
+  // but only if the calendarId contains the word "test" (hacky)
+  const testMode = request.url.includes("test=1");
+
   if (
+    !testMode &&
     authHeader !== `Bearer ${process.env.CRON_SECRET}` &&
     process.env.NODE_ENV === "production"
   ) {
@@ -25,6 +30,9 @@ export async function GET(request: NextRequest) {
   const collections = await admin.firestore().listCollections();
   for (let i = 0; i < collections.length; i++) {
     const calendarId = collections[i].id;
+
+    if (!calendarId.includes("test") && testMode) continue;
+
     const docRef = admin.firestore().collection(calendarId).doc("config");
     const doc = await docRef.get();
 
