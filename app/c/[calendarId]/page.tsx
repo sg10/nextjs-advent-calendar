@@ -1,4 +1,4 @@
-import { getFirestoreDB } from "@/app/firebase-server";
+import { getFirestoreDB } from "@/app/api/firebase-admin";
 import NotificationManager from "@/components/NotificationManager";
 import WindowsGrid from "@/components/WindowsGrid";
 

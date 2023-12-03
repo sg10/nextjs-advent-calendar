@@ -15,7 +15,7 @@ const firebaseConfig = {
 let app: ReturnType<typeof initializeApp>;
 let db: ReturnType<typeof getFirestore>;
 
-export function FirebaseClientProvider({
+export default function FirebaseClientProviderSSR({
   children,
 }: {
   children: JSX.Element;

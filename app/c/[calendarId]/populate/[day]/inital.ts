@@ -1,5 +1,4 @@
-import { getFirestoreDB } from "@/app/firebase-server";
-import { doc, setDoc } from "firebase/firestore";
+import { getFirestoreDB } from "@/app/api/firebase-admin";
 
 export default async function initialPopulate({
   calendarId,

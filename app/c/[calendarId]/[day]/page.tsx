@@ -1,9 +1,8 @@
-import { firestoreDB, getFirestoreDB } from "@/app/firebase-server";
+import { getFirestoreDB } from "@/app/api/firebase-admin";
 import { isOpen } from "@/app/utils/calendarUtils";
 import WindowContent from "@/components/content/WindowContent";
 import { Button } from "@nextui-org/button";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
-import { doc, getDoc } from "firebase/firestore";
 import Link from "next/link";
 
 interface Params {

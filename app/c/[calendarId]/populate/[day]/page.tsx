@@ -1,11 +1,16 @@
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { Button } from "@nextui-org/button";
 
+import { getFirestoreDB } from "@/app/api/firebase-admin";
 import { revalidatePath } from "next/cache";
-import JsonEditor from "./JsonEditor";
-import RenderedWindowMaybe from "./RenderedWindowMaybe";
+import dynamic from "next/dynamic";
+import WindowCardPreview from "./WindowCardPreview";
 import initialPopulate from "./inital";
-import { getFirestoreDB } from "@/app/firebase-server";
+import React from "react";
+
+const JSONEditorComponent = dynamic(() => import("./JsonEditor"), {
+  ssr: false,
+}) as React.FC<{ defaultValue: any; name: string }>;
 
 export default async function InitalPopulate({
   params: { calendarId, day },
@@ -50,7 +55,7 @@ export default async function InitalPopulate({
     revalidatePath(`/c/${calendarId}/populate/${day}`);
   }
 
-  const window = windows.find((window) => `${window.day}` === `${day}`);
+  const calendarWindow = windows.find((window) => `${window.day}` === `${day}`);
 
   return (
     <div className="flex flex-col gap-8 items-stretch justify-center">
@@ -72,17 +77,17 @@ export default async function InitalPopulate({
           </a>
         ))}
       </div>
-      {window && (
+      {calendarWindow && (
         <>
           <form
             action={create}
             className="flex flex-col gap-8 items-stretch justify-center w-full"
           >
-            <JsonEditor defaultValue={window} name="data" />
+            <JSONEditorComponent defaultValue={calendarWindow} name="data" />
             <Button type="submit">Save</Button>
           </form>
           <ErrorBoundary fallback={<div>Invalid data</div>}>
-            <RenderedWindowMaybe window={window} />
+            <WindowCardPreview window={calendarWindow} />
           </ErrorBoundary>
         </>
       )}

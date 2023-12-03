@@ -5,8 +5,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "@nextui-org/link";
 import clsx from "clsx";
 import { Metadata } from "next";
-import { Suspense } from "react";
-import { FirebaseClientProvider } from "./firebase-client";
+import React, { Suspense } from "react";
+import dynamic from "next/dynamic";
+
+const FirebaseClientProvider = dynamic(() => import("./firebase-client"), {
+  ssr: false,
+}) as React.FC<{ children: React.ReactNode }>;
 
 export const metadata: Metadata = {
   title: {
