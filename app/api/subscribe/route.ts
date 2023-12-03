@@ -1,7 +1,6 @@
-import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { requireFirebaseAdmin } from "../firebase-admin";
-import { NOTIFICATION_TOPIC } from "@/config/notifications";
 
 export async function POST(request: NextRequest) {
   const admin = requireFirebaseAdmin();
@@ -56,23 +55,21 @@ export async function POST(request: NextRequest) {
   );
 
   if (existingSubscription) {
-    return NextResponse.json(
-      { success: false, error: "Token already subscribed" },
-      {
-        status: 401,
-      },
-    );
+    // replace existing subscription
+    existingSubscription.hour = jsonData.hour;
+  } else {
+    // add new subscription
+    subscriptions.push({
+      token,
+      hour: jsonData.hour,
+    });
   }
-
-  // add new subscription
-  subscriptions.push({
-    token,
-    hour: jsonData.hour,
-  });
 
   await docRef.update({
     subscriptions,
   });
+
+  console.log(`Added subscription for calendar ${calendarId}`);
 
   return NextResponse.json({ success: true });
 }
