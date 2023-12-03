@@ -25,6 +25,13 @@ export default function ContentElementResolver({
         height={500}
       />
     );
+  }
+  if (data.type === "video-file") {
+    return (
+      <video controls width="100%" className="w-full" height="auto">
+        <source src={data.url} type="video/mp4" />
+      </video>
+    );
   } else if (data.type === "placeholder") {
     return (
       <div className="w-full h-96 bg-gray-200 dark:bg-gray-800">
