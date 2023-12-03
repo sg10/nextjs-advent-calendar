@@ -21,9 +21,11 @@ export default async function InitalPopulate({
     .collection(calendarId)
     .doc("config")
     .get();
-  if (!configDoc.exists) {
-    initialPopulate({ calendarId });
-  }
+
+  const config = (configDoc.data() ?? initialPopulate({ calendarId })) as {
+    title: string;
+  };
+
   const windowsDocs = await getFirestoreDB()
     .collection(calendarId)
     .doc("config")
@@ -60,7 +62,7 @@ export default async function InitalPopulate({
   return (
     <div className="flex flex-col gap-8 items-stretch justify-center">
       <h1 className="text-3xl font-bold text-center text-primary">
-        Populate {calendarId}
+        Populate {config.title}
       </h1>
       <div className="flex flex-row gap-2 items-stretch justify-center flex-wrap">
         {windows.map((window) => (

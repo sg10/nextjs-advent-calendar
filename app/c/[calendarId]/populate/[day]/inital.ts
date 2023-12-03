@@ -4,7 +4,7 @@ export default async function initialPopulate({
   calendarId,
 }: {
   calendarId: string;
-}) {
+}): Promise<{ title: string }> {
   await getFirestoreDB().collection(calendarId).doc("config").set({
     title: "Advent Calendar",
   });
@@ -38,4 +38,8 @@ export default async function initialPopulate({
   );
 
   console.log("Done");
+
+  const doc = await getFirestoreDB().collection(calendarId).doc("config").get();
+
+  return doc.data() as { title: string };
 }

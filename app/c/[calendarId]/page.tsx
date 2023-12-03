@@ -8,8 +8,6 @@ interface PageProps {
   };
 }
 
-const notificationsEnabled = false;
-
 export default async function Page({ params: { calendarId } }: PageProps) {
   const configDoc = await getFirestoreDB()
     .collection(calendarId)
@@ -25,7 +23,10 @@ export default async function Page({ params: { calendarId } }: PageProps) {
     );
   }
 
-  const config = configDoc.data() as { title: string };
+  const config = configDoc.data() as {
+    title: string;
+    notificationsEnabled: boolean | undefined;
+  };
 
   const windowsDocs = await getFirestoreDB()
     .collection(calendarId)
@@ -48,7 +49,7 @@ export default async function Page({ params: { calendarId } }: PageProps) {
         {config.title}
       </h1>
 
-      {notificationsEnabled && <NotificationManager />}
+      {config.notificationsEnabled && <NotificationManager />}
       <WindowsGrid windows={windows} />
     </div>
   );

@@ -14,7 +14,13 @@ export async function POST(request: NextRequest) {
       },
     );
 
-  const token = (await request.json()).token;
+  const jsonData = (await request.json()) as {
+    token: string;
+    calendarId: string;
+    hour: number;
+  };
+
+  const token = jsonData.token;
 
   if (!token?.length) {
     return NextResponse.json(
@@ -25,21 +31,48 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const registrationTokens = [token];
+  const db = admin.firestore();
 
-  try {
-    const response = await admin
-      .messaging()
-      .subscribeToTopic(registrationTokens, NOTIFICATION_TOPIC);
-    console.log("Successfully subscribed to topic:", response);
-    return NextResponse.json({ success: true });
-  } catch (error) {
-    console.log("Error subscribing to topic:", error);
+  const calendarId = jsonData.calendarId;
+
+  const docRef = db.collection(calendarId).doc("config");
+  const doc = await docRef.get();
+
+  if (!doc.exists) {
     return NextResponse.json(
-      { success: false, error: "Error subscribing to topic" },
+      { success: false, error: "Calendar not found" },
       {
         status: 401,
       },
     );
   }
+
+  // set single field: subscriptions
+  const subscriptions = doc.data()?.subscriptions ?? [];
+
+  // check if token already exists
+  const existingSubscription = subscriptions.find(
+    (s: any) => s.token === token,
+  );
+
+  if (existingSubscription) {
+    return NextResponse.json(
+      { success: false, error: "Token already subscribed" },
+      {
+        status: 401,
+      },
+    );
+  }
+
+  // add new subscription
+  subscriptions.push({
+    token,
+    hour: jsonData.hour,
+  });
+
+  await docRef.update({
+    subscriptions,
+  });
+
+  return NextResponse.json({ success: true });
 }

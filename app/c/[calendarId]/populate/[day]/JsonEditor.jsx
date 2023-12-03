@@ -9,7 +9,12 @@ export default function JsonEditor({ defaultValue, name }) {
 
   return (
     <>
-      <input name={name} className="hidden" value={JSON.stringify(value)} />
+      <input
+        name={name}
+        className="hidden"
+        value={JSON.stringify(value)}
+        onChange={() => {}}
+      />
       <Editor
         value={value}
         onChange={(v) => setValue(v)}
