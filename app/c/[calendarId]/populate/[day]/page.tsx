@@ -64,23 +64,23 @@ export default async function InitalPopulate({
       <h1 className="text-3xl font-bold text-center text-primary">
         Populate {config.title}
       </h1>
-      <div className="flex flex-row gap-2 items-stretch justify-center flex-wrap">
-        {windows.map((window) => (
-          <a
-            key={window.day}
-            href={`/c/${calendarId}/populate/${window.day}`}
-            className="text-center text-primary"
-          >
-            {`${window.day}` === `${day}` ? (
-              <span className="font-bold">{window.day}</span>
-            ) : (
-              window.day
-            )}
-          </a>
-        ))}
-      </div>
-      {calendarWindow && (
+      {calendarWindow ? (
         <>
+          <div className="flex flex-row gap-2 items-stretch justify-center flex-wrap">
+            {windows.map((window) => (
+              <a
+                key={window.day}
+                href={`/c/${calendarId}/populate/${window.day}`}
+                className="text-center text-primary"
+              >
+                {`${window.day}` === `${day}` ? (
+                  <span className="font-bold">{window.day}</span>
+                ) : (
+                  window.day
+                )}
+              </a>
+            ))}
+          </div>
           <form
             action={create}
             className="flex flex-col gap-8 items-stretch justify-center w-full"
@@ -92,6 +92,20 @@ export default async function InitalPopulate({
             <WindowCardPreview window={calendarWindow} />
           </ErrorBoundary>
         </>
+      ) : (
+        // list of windows including title
+        <div className="flex flex-col gap-8 items-stretch justify-center w-full">
+          {windows.map((window) => (
+            <div
+              key={window.day}
+              className="flex flex-col gap-8 items-stretch justify-center w-full"
+            >
+              <a href={`/c/${calendarId}/populate/${window.day}`}>
+                {window.day} - {window.title}
+              </a>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );
