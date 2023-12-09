@@ -45,7 +45,8 @@ export default async function InitalPopulate({
   async function create(formData: FormData) {
     "use server";
 
-    const dataString = formData.get("data") as string;
+    const dataString = formData.get("data") as string | null;
+    if (!dataString) throw new Error("No data");
     const data = JSON.parse(dataString);
 
     await getFirestoreDB()
