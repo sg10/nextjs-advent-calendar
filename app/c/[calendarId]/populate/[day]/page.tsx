@@ -7,6 +7,7 @@ import dynamic from "next/dynamic";
 import WindowCardPreview from "./WindowCardPreview";
 import initialPopulate from "./inital";
 import React from "react";
+import Link from "next/link";
 
 const JSONEditorComponent = dynamic(() => import("./JsonEditor"), {
   ssr: false,
@@ -62,7 +63,7 @@ export default async function InitalPopulate({
   return (
     <div className="flex flex-col gap-8 items-stretch justify-center">
       <h1 className="text-3xl font-bold text-center text-primary">
-        Populate {config.title}
+        <Link href={`/c/${calendarId}/populate`}>Populate {config.title}</Link>
       </h1>
       {calendarWindow ? (
         <>
