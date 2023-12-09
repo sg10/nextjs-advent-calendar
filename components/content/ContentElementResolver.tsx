@@ -1,4 +1,4 @@
-import Image from "next/image";
+import SpotifyWidget from "./SpotifyWidget";
 import YouTube from "./YouTube";
 
 export default function ContentElementResolver({
@@ -40,6 +40,8 @@ export default function ContentElementResolver({
         </div>
       </div>
     );
+  } else if (data.type === "spotify") {
+    return <SpotifyWidget url={data.url} />;
   }
 
   return <div>Invalid type: {data.type ?? "undefined"}</div>;
