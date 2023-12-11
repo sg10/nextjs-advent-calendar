@@ -1,3 +1,4 @@
+import SingleImage from "./SingleImage";
 import SpotifyWidget from "./SpotifyWidget";
 import YouTube from "./YouTube";
 
@@ -15,16 +16,7 @@ export default function ContentElementResolver({
       </div>
     );
   } else if (data.type === "image") {
-    return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img
-        src={data.url}
-        alt={data.url}
-        className="w-full"
-        width={500}
-        height={500}
-      />
-    );
+    return <SingleImage url={data.url} />;
   }
   if (data.type === "video-file") {
     return (

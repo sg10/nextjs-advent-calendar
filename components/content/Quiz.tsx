@@ -125,7 +125,7 @@ export default function Quiz({
     <div className="flex flex-col items-center justify-center gap-4 p-4 min-h-[300px]">
       {currentQuestionIndex === -1 ? (
         <>
-          <p>{q.intro}</p>
+          <p className="text-xl text-center">{q.intro}</p>
           <p>
             (
             {q.questions.length === 1

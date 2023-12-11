@@ -39,7 +39,7 @@ export default async function Page({
         {isOpen(day) ? (
           <div className="flex flex-col items-stretch justify-center">
             <CardHeader>
-              <h1 className="text-3xl font-bold text-center text-primary flex items-center justify-center">
+              <h1 className="text-3xl font-bold text-center text-primary flex items-center justify-center flex-start">
                 <div className="flex items-center justify-center w-10 h-10 mr-2 rounded-full bg-primary text-white text-lg">
                   {day}
                 </div>
