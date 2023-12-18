@@ -1,3 +1,4 @@
+import MiniGallery from "./Gallery";
 import SingleImage from "./SingleImage";
 import SpotifyWidget from "./SpotifyWidget";
 import YouTube from "./YouTube";
@@ -34,6 +35,8 @@ export default function ContentElementResolver({
     );
   } else if (data.type === "spotify") {
     return <SpotifyWidget url={data.url} />;
+  } else if (data.type === "gallery") {
+    return <MiniGallery images={data.images} />;
   }
 
   return <div>Invalid type: {data.type ?? "undefined"}</div>;
