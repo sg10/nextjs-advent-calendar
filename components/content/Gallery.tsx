@@ -27,6 +27,7 @@ export default function MiniGallery({
   return (
     <div>
       <Gallery
+        /* @ts-ignore */
         images={images.map((url) => ({ src: url, thumbnail: url }))}
         onClick={handleClick}
         enableImageSelection={false}
