@@ -159,7 +159,7 @@ export default function Quiz({
                     onClick={() => selectAnswer(index)}
                     className={`${
                       selectedAnswers.includes(index) ? "font-bold" : ""
-                    }`}
+                    } whitespace-pre-wrap h-full py-4`}
                   >
                     {answer.image && ( // eslint-disable-next-line @next/next/no-img-element
                       <img src={answer.image} alt={answer.text} />
