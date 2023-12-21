@@ -3,8 +3,8 @@
 This is a template for creating applications using Next.js 13 (app directory) and NextUI (v2).
 
 
-<img src="demo/overview.png" alt="Days overview" width="250" height="250" />
-<img src="demo/content.png" alt="YouTube content window" width="250" height="250" />
+<img src="demo/overview.png" alt="Days overview" width="350" />
+<img src="demo/content.png" alt="YouTube content window" width="350" />
 
 
 ## Features
