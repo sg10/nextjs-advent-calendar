@@ -1,6 +1,6 @@
 # Next.js Advent Calendar
 
-This is a template for creating applications using Next.js 13 (app directory) and NextUI (v2).
+This is a small advent calendar web app that allows to create and populate 24 windows with digital content to make friends, family and strangers happy during advent.
 
 
 <img src="demo/overview.png" alt="Days overview" width="350" />
