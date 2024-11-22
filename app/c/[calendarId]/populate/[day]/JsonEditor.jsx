@@ -1,7 +1,5 @@
 "use client";
 
-import { JsonEditor as Editor } from "jsoneditor-react";
-import "jsoneditor-react/es/editor.min.css";
 import { useState } from "react";
 
 export default function JsonEditor({ defaultValue, name }) {
@@ -21,14 +19,7 @@ export default function JsonEditor({ defaultValue, name }) {
         value={jsonOrNull}
         onChange={() => {}}
       />
-      <Editor
-        value={value}
-        onChange={(v) => setValue(v)}
-        mainMenuBar={true}
-        statusBar={false}
-        allowedModes={["code", "tree"]}
-        htmlElementProps={{ style: { height: 500 } }}
-      />
+      <pre>{JSON.stringify(value, null, 2)}</pre>
     </div>
   );
 }

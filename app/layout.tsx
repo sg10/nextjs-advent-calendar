@@ -7,10 +7,7 @@ import clsx from "clsx";
 import { Metadata } from "next";
 import React, { Suspense } from "react";
 import dynamic from "next/dynamic";
-
-const FirebaseClientProvider = dynamic(() => import("./firebase-client"), {
-  ssr: false,
-}) as React.FC<{ children: React.ReactNode }>;
+import FirebaseClientProviderSSR from "./firebase-client";
 
 export const metadata: Metadata = {
   title: {
@@ -39,7 +36,7 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <FirebaseClientProvider>
+        <FirebaseClientProviderSSR>
           <div className="relative flex flex-col h-screen">
             <main className="container w-full max-w-xl mx-auto pt-16 px-6 flex-grow">
               <Suspense
@@ -70,7 +67,7 @@ export default function RootLayout({
               </Link>
             </footer>
           </div>
-        </FirebaseClientProvider>
+        </FirebaseClientProviderSSR>
       </body>
     </html>
   );

@@ -1,52 +1,90 @@
+"use client";
+
 import { getGDriveImage } from "@/app/utils/urlUtils";
-import { useState } from "react";
-import { Gallery } from "react-grid-gallery";
-import Lightbox from "react-image-lightbox";
-import "react-image-lightbox/style.css";
+import { useState, useCallback } from "react";
+import {
+  RowsPhotoAlbum,
+  RenderImageProps,
+  RenderImageContext,
+} from "react-photo-album";
+import "react-photo-album/rows.css";
+import Image from "next/image";
+import { Modal, ModalContent } from "@nextui-org/react";
+
+function renderNextImage(
+  { alt = "", title, sizes }: RenderImageProps,
+  { photo, width, height }: RenderImageContext,
+) {
+  return (
+    <div
+      style={{
+        width: "100%",
+        position: "relative",
+        aspectRatio: `${width} / ${height}`,
+      }}
+    >
+      <Image
+        fill
+        src={photo.src}
+        alt={alt}
+        title={title}
+        sizes={sizes}
+        style={{ objectFit: "cover" }}
+      />
+    </div>
+  );
+}
 
 export default function MiniGallery({
   images,
 }: {
   images: string[];
 }): JSX.Element {
-  const [index, setIndex] = useState(-1);
+  const [currentImage, setCurrentImage] = useState<number | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
 
-  images = images.map(getGDriveImage);
+  const handleClick = useCallback((index: number) => {
+    setCurrentImage(index);
+    setIsOpen(true);
+  }, []);
 
-  const currentImage = images[index];
-  const nextIndex = (index + 1) % images.length;
-  const nextImage = images[nextIndex] || currentImage;
-  const prevIndex = (index + images.length - 1) % images.length;
-  const prevImage = images[prevIndex] || currentImage;
-
-  const handleClick = (index: number, item: any) => setIndex(index);
-  const handleClose = () => setIndex(-1);
-  const handleMovePrev = () => setIndex(prevIndex);
-  const handleMoveNext = () => setIndex(nextIndex);
+  const photos = images.map((img) => ({
+    src: getGDriveImage(img),
+    width: 1600,
+    height: 1200,
+  }));
 
   return (
     <div>
-      <Gallery
-        /* @ts-ignore */
-        images={images.map((url) => ({ src: url, thumbnail: url }))}
-        onClick={handleClick}
-        enableImageSelection={false}
+      <RowsPhotoAlbum
+        photos={photos}
+        onClick={({ event, photo, index }) => handleClick(index)}
+        spacing={8}
+        padding={0}
+        rowConstraints={{
+          minPhotos: 1,
+          maxPhotos: 1,
+        }}
+        render={{ image: renderNextImage }}
+        sizes={{
+          size: "100vw",
+          sizes: [{ viewport: "(max-width: 768px)", size: "100vw" }],
+        }}
       />
-      {!!currentImage && (
-        /* @ts-ignore */
-        <Lightbox
-          mainSrc={currentImage}
-          //imageTitle={currentImage.caption}
-          mainSrcThumbnail={currentImage}
-          nextSrc={nextImage}
-          nextSrcThumbnail={nextImage}
-          prevSrc={prevImage}
-          prevSrcThumbnail={prevImage}
-          onCloseRequest={handleClose}
-          onMovePrevRequest={handleMovePrev}
-          onMoveNextRequest={handleMoveNext}
-        />
-      )}
+
+      <Modal size="full" isOpen={isOpen} onClose={() => setIsOpen(false)}>
+        <ModalContent>
+          {currentImage !== null && (
+            <Image
+              src={photos[currentImage].src}
+              alt="Full size image"
+              fill
+              style={{ objectFit: "contain" }}
+              onClick={() => setIsOpen(false)}
+            />
+          )}
+        </ModalContent>
+      </Modal>
     </div>
   );
 }

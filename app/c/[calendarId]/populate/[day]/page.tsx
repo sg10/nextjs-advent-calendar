@@ -8,10 +8,7 @@ import WindowCardPreview from "./WindowCardPreview";
 import initialPopulate from "./inital";
 import React from "react";
 import Link from "next/link";
-
-const JSONEditorComponent = dynamic(() => import("./JsonEditor"), {
-  ssr: false,
-}) as React.FC<{ defaultValue: any; name: string }>;
+import WindowEditor from "./WindowEditor";
 
 export default async function InitalPopulate({
   params: { calendarId, day },
@@ -87,7 +84,7 @@ export default async function InitalPopulate({
             action={create}
             className="flex flex-col gap-8 items-stretch justify-center w-full"
           >
-            <JSONEditorComponent defaultValue={calendarWindow} name="data" />
+            <WindowEditor defaultValue={calendarWindow} name="data" />
             <Button type="submit">Save</Button>
           </form>
           <ErrorBoundary fallback={<div>Invalid data</div>}>
