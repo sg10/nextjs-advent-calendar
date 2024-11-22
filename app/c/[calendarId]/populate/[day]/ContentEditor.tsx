@@ -13,7 +13,9 @@ import {
   SpotifyContent,
   GalleryContent,
   LinkContent,
+  QuizContent,
 } from "./types";
+import QuizEditor from "./QuizEditor";
 
 export default function ContentEditor({
   content,
@@ -26,7 +28,6 @@ export default function ContentEditor({
 
   const updateType = (newType: ContentType) => {
     setType(newType);
-    // Create default content for new type
     switch (newType) {
       case "youtube":
         onChange({ type: "youtube", url: "" });
@@ -84,7 +85,7 @@ export default function ContentEditor({
       {type === "text" && (
         <Textarea
           label="Text Content"
-          value={(content as TextContent).text}
+          value={(content as TextContent).text || ""}
           onValueChange={(value) => onChange({ ...content, text: value })}
         />
       )}
@@ -165,7 +166,12 @@ export default function ContentEditor({
         </div>
       )}
 
-      {type === "quiz" && "Quiz to be implemented"}
+      {type === "quiz" && (
+        <QuizEditor
+          quiz={content as QuizContent}
+          onChange={(quiz) => onChange({ ...content, ...quiz })}
+        />
+      )}
     </div>
   );
 }

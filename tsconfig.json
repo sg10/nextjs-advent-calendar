@@ -23,6 +23,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/c/[calendarId]/populate/[day]/JsonEditor.jsx", "app/c/[calendarId]/populate/[day]/JsonEditor.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/c/[calendarId]/populate/[day]/JsonModal.jsx", "app/c/[calendarId]/populate/[day]/JsonModal.jsx"],
   "exclude": ["node_modules"]
 }

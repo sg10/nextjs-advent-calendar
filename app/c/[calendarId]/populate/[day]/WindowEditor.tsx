@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@nextui-org/input";
 import { Textarea } from "@nextui-org/input";
 import ContentEditor from "./ContentEditor";
 import { ContentData } from "./types";
-import JsonEditor from "./JsonEditor";
+import JsonModal from "./JsonModal";
 
 interface WindowData {
   day: number;
@@ -24,6 +24,10 @@ export default function WindowEditor({
 }) {
   const [data, setData] = useState<WindowData>(defaultValue);
 
+  useEffect(() => {
+    setData(defaultValue);
+  }, [defaultValue]);
+
   const updateData = (newData: WindowData) => {
     setData(newData);
   };
@@ -40,7 +44,7 @@ export default function WindowEditor({
 
       <Textarea
         label="Description"
-        value={data.text}
+        value={data.text || ""}
         onValueChange={(value) => updateData({ ...data, text: value })}
       />
 
@@ -48,7 +52,6 @@ export default function WindowEditor({
         <h3 className="text-lg font-bold">Content</h3>
         {data.content.map((content, index) => (
           <div key={index} className="border p-4 rounded">
-            <JsonEditor defaultValue={content} name={`content[${index}]`} />
             <ContentEditor
               content={content}
               onChange={(newContent) => {
@@ -57,6 +60,7 @@ export default function WindowEditor({
                 updateData({ ...data, content: newContentArray });
               }}
             />
+            <JsonModal value={content} name={`content[${index}]`} />
           </div>
         ))}
       </div>
